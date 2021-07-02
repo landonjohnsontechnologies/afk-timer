@@ -137,9 +137,9 @@ export default function Home() {
     const oldTheme = localStorage.getItem("theme");
     setActive(oldTheme as string);
 
-    if (null !== counter) {
-      clearInterval(counter);
-    }
+    // if (null !== counter) {
+    //   clearInterval(counter);
+    // }
   }, []);
 
   const handleTheme = () => {
@@ -294,7 +294,12 @@ export default function Home() {
         )}
       </main>
       <div className={styles.footer}>
-        <a className={styles.logo} href="https://ljtech.ca" target="_blank">
+        <a
+          className={styles.logo}
+          rel="noreferrer"
+          href="https://ljtech.ca"
+          target="_blank"
+        >
           <span className={styles.image}>
             <Image alt="logo" src="/logo-blue.svg" width={24} height={24} />
           </span>
