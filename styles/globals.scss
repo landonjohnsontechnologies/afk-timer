@@ -1,0 +1,76 @@
+.light {
+  --background: #ffffff;
+  --border: #ddd;
+  --color: #202124;
+}
+
+.dark {
+  --background: #202124;
+  --border: #60a5fa;
+  --color: #fcfcfc;
+  ::-webkit-calendar-picker-indicator {
+    filter: invert(1);
+  }
+}
+
+html,
+body {
+  color: var(--color);
+  background-color: var(--background);
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+}
+
+body {
+  transition: 0.2s;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  color: var(--color);
+}
+
+input,
+select,
+textarea {
+  color: var(--color);
+  background-color: var(--background);
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  outline: unset;
+}
+
+input,
+option {
+  padding: 0.25rem;
+}
+
+option {
+  text-align: right;
+  transition: 0.4s opacity;
+  cursor: pointer;
+  &:focus,
+  &:hover,
+  &:checked,
+  &:active {
+    background: linear-gradient(#60a5fa, #60a5fa);
+  }
+  &:hover {
+    opacity: 0.6;
+  }
+}
+
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+::-webkit-scrollbar {
+  display: none;
+}
