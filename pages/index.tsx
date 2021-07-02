@@ -21,6 +21,7 @@ export default function Home() {
     countdown: false,
     menu: false,
     message: "",
+    expiry: "",
   });
   const dateRef = useRef<HTMLInputElement>(null);
   const hourRef = useRef<HTMLSelectElement>(null);
@@ -77,6 +78,8 @@ export default function Home() {
         }));
       }
       if (seconds == 0 && minutes == 0 && hours == 0) {
+        const expiryTime = new Date().toLocaleTimeString();
+        setView((currentValues) => ({ ...currentValues, expiry: expiryTime }));
         clearInterval(newCounter);
       }
     }, 1000);
@@ -93,9 +96,26 @@ export default function Home() {
 
   const handleCountdown = (method: string) => {
     if (method == "date") {
-      //TODO: think this out
-      // const newTarget = new Date(dateRef.current?.value as string).doSomethingHere???;
-      // countdownTimer(newTarget);
+      // const newMessage = messageRef.current?.value;
+      // setView((currentValues) => ({
+      //   ...currentValues,
+      //   message: newMessage as string,
+      // }));
+      const currentTime = new Date().getTime();
+      const dateTarget = Date.parse(dateRef.current?.value as string);
+      let differenceTarget = dateTarget - currentTime;
+      let hoursTarget = Math.floor(differenceTarget / 1000 / 60 / 60);
+      let minutesTarget = Math.floor((differenceTarget / 1000 / 60) % 60);
+      let secondsTarget = Math.floor((differenceTarget / 1000) % 60);
+      let newTarget = Math.floor(differenceTarget / 1000);
+      console.log(hoursTarget, minutesTarget, secondsTarget);
+      countdownTimer(newTarget, hoursTarget, minutesTarget, secondsTarget);
+      setTime((currentValues) => ({
+        ...currentValues,
+        hours: hoursTarget,
+        minutes: minutesTarget,
+        seconds: secondsTarget,
+      }));
       closeView("interface");
       openView("countdown");
     }
@@ -116,6 +136,11 @@ export default function Home() {
     }
     if (method == "stop") {
       clearInterval(counter);
+      setView((currentValues) => ({
+        ...currentValues,
+        message: "",
+        expiry: "",
+      }));
       openView("interface");
       closeView("countdown");
     }
@@ -123,6 +148,7 @@ export default function Home() {
       ...currentValues,
       message: messageRef.current?.value as string,
     }));
+    console.log("your message:", messageRef.current?.value as string);
     closeView("menu");
   };
 
@@ -137,6 +163,7 @@ export default function Home() {
     const oldTheme = localStorage.getItem("theme");
     setActive(oldTheme as string);
 
+    //TODO: add this if brain is leaking
     // if (null !== counter) {
     //   clearInterval(counter);
     // }
@@ -151,7 +178,7 @@ export default function Home() {
       setTheme("dark");
     }
     if (active == "dark") {
-      localStorage.setItem("theme", "dark");
+      localStorage.setItem("theme", "light");
       document.body.classList.replace("dark", "light");
       document.body.classList.add("light");
       setActive("light");
@@ -171,7 +198,6 @@ export default function Home() {
         {view.countdown && (
           <div>
             <div className={styles.countdown}>
-              <div>target: {time.target}</div>
               <span>
                 {time.hours.toLocaleString("en-US", {
                   minimumIntegerDigits: 2,
@@ -192,12 +218,22 @@ export default function Home() {
                   useGrouping: false,
                 })}
               </span>
-              <div>{view.message}</div>
+              {view.message != "" && <div>{view.message}</div>}
+              {view.expiry != "" && (
+                <div>
+                  <div className={styles.small}>
+                    countdown iterations: {time.target}
+                  </div>
+                  <div className={styles.small}>
+                    countdown expired: {view.expiry}
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         )}
         {view.interface && (
-          <form className={styles.interface}>
+          <div className={styles.interface}>
             <div className={styles.block}>
               <div>choose a date</div>
               <div className={styles.fieldset}>
@@ -281,6 +317,7 @@ export default function Home() {
               <div className={styles.fieldset}>
                 <label htmlFor="message">
                   <input
+                    autoComplete="off"
                     ref={messageRef}
                     name="message"
                     type="text"
@@ -290,7 +327,7 @@ export default function Home() {
                 </label>
               </div>
             </div>
-          </form>
+          </div>
         )}
       </main>
       <div className={styles.footer}>
