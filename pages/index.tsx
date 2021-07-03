@@ -154,7 +154,6 @@ export default function Home() {
 
   useEffect(() => {
     if (time.hours == 0 && time.minutes == 0 && time.seconds == 0) {
-      clearInterval(counter);
       openView("finished");
     }
   }, [time]);
