@@ -18,13 +18,13 @@ Generates a HH:MM:SS countdown timer based on date or time inputs.
 Clone the project
 
 ```bash
-git clone https://github.com/ljtechdotca/grocery-list.git/
+git clone https://github.com/ljtechdotca/countdown-timer.git/
 ```
 
 Go to the project directory
 
 ```bash
-cd grocery-list
+cd countdown-timer
 ```
 
 Install dependencies
